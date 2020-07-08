@@ -1,4 +1,4 @@
-import React, { PureComponent, Component } from "react";
+import React, { PureComponent } from "react";
 import { FixedSizeList as List } from "react-window";
 import memoize from "memoize-one";
 import { convertData } from "./utils";
@@ -10,7 +10,7 @@ const getItemData = memoize((listData, width) => ({
 }));
 
 export default function FlameChart({ data, height, width }) {
-  const listData = convertData(data);
+  const listData = memoizedConvertData(data);
   const itemData = getItemData(listData, width);
 
   return (
@@ -26,8 +26,9 @@ export default function FlameChart({ data, height, width }) {
   );
 }
 
-class ListItem extends Component {
+class ListItem extends PureComponent {
   render() {
+    console.log("props", this.props);
     const { data, index, style } = this.props;
     const { listData, width } = data;
     const nodes = listData[index];
